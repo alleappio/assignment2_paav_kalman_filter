@@ -3,9 +3,9 @@
 Tracker::Tracker()
 {
     cur_id_ = 0;
-    distance_threshold_ = 0.0; // meters
-    covariance_threshold = 0.0; 
-    loss_threshold = 0; //number of frames the track has not been seen
+    distance_threshold_ = 2.0; // meters
+    covariance_threshold = 1.0; 
+    loss_threshold = 50; //number of frames the track has not been seen
 }
 Tracker::~Tracker()
 {
@@ -17,14 +17,14 @@ Tracker::~Tracker()
 void Tracker::removeTracks()
 {
     std::vector<Tracklet> tracks_to_keep;
-
+    
     for (size_t i = 0; i < tracks_.size(); ++i)
     {
         // TODO
         // Implement logic to discard old tracklets
         // logic_to_keep is a dummy placeholder to make the code compile and should be subsituted with the real condition
-        bool logic_to_keep = true;
-        if (logic_to_keep)
+        if (tracks_[i].getXCovariance() < covariance_threshold && tracks_[i].getYCovariance() < covariance_threshold ||
+            tracks_[i].getLossCount() > loss_threshold)
             tracks_to_keep.push_back(tracks_[i]);
     }
 
@@ -65,8 +65,13 @@ void Tracker::dataAssociation(std::vector<bool> &associated_detections, const st
             // TODO
             // Implement logic to find the closest detection (centroids_x,centroids_y) 
             // to the current track (tracks_) 
-            
+            double dist = std::hypot(centroids_x[j] - tracks_[i].getX(), centroids_y[j] - tracks_[i].getY());
+            if(dist < min_dist){
+                min_dist=dist;
+                closest_point_id = j;
+            }
         }
+        std::cout << "min dist found" << std::endl;
 
         // Associate the closest detection to a tracklet
         if (min_dist < distance_threshold_ && !associated_detections[closest_point_id])
@@ -83,12 +88,17 @@ void Tracker::track(const std::vector<double> &centroids_x,
 {
 
     std::vector<bool> associated_detections(centroids_x.size(), false);
-
     // TODO: Predict the position
     //For each track --> Predict the position of the tracklets
-    
-    // TODO: Associate the predictions with the detections
+    for(int i=0; i<tracks_.size(); i++){
+        tracks_[i].predict();
+    } 
 
+    std::cout << "predicted" << std::endl;
+    // TODO: Associate the predictions with the detections
+    dataAssociation(associated_detections, centroids_x, centroids_y);
+    std::cout << "association" << std::endl;
+     
     // Update tracklets with the new detections
     for (int i = 0; i < associated_track_det_ids_.size(); ++i)
     {
@@ -98,6 +108,9 @@ void Tracker::track(const std::vector<double> &centroids_x,
     }
 
     // TODO: Remove dead tracklets
-
+    removeTracks();
+    std::cout << "tracks removed" << std::endl;
     // TODO: Add new tracklets
+    addTracks(associated_detections, centroids_x, centroids_y);
+    std::cout << "tracks added" << std::endl;
 }
