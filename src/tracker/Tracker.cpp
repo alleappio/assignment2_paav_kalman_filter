@@ -71,7 +71,6 @@ void Tracker::dataAssociation(std::vector<bool> &associated_detections, const st
                 closest_point_id = j;
             }
         }
-        std::cout << "min dist found" << std::endl;
 
         // Associate the closest detection to a tracklet
         if (min_dist < distance_threshold_ && !associated_detections[closest_point_id])
@@ -94,10 +93,8 @@ void Tracker::track(const std::vector<double> &centroids_x,
         tracks_[i].predict();
     } 
 
-    std::cout << "predicted" << std::endl;
     // TODO: Associate the predictions with the detections
     dataAssociation(associated_detections, centroids_x, centroids_y);
-    std::cout << "association" << std::endl;
      
     // Update tracklets with the new detections
     for (int i = 0; i < associated_track_det_ids_.size(); ++i)
@@ -109,8 +106,6 @@ void Tracker::track(const std::vector<double> &centroids_x,
 
     // TODO: Remove dead tracklets
     removeTracks();
-    std::cout << "tracks removed" << std::endl;
     // TODO: Add new tracklets
     addTracks(associated_detections, centroids_x, centroids_y);
-    std::cout << "tracks added" << std::endl;
 }
