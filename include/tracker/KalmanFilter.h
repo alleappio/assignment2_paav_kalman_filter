@@ -23,6 +23,8 @@ public:
   double getYCovariance() { return P_.coeff(1, 1); }
   double getX() { return x_[0]; }
   double getY() { return x_[1]; }
+  Eigen::MatrixXd getSMatrix();
+  Eigen::VectorXd getMeasureDifferenceY(const Eigen::VectorXd &z);
 
 private:
   // dt in seconds

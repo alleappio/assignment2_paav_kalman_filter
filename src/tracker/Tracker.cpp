@@ -6,6 +6,7 @@ Tracker::Tracker()
     distance_threshold_ = 2.0; // meters
     covariance_threshold = 1.0; 
     loss_threshold = 50; //number of frames the track has not been seen
+    mahalanobis_dist=true;
 }
 Tracker::~Tracker()
 {
@@ -64,8 +65,21 @@ void Tracker::dataAssociation(std::vector<bool> &associated_detections, const st
         {
             // TODO
             // Implement logic to find the closest detection (centroids_x,centroids_y) 
-            // to the current track (tracks_) 
-            double dist = std::hypot(centroids_x[j] - tracks_[i].getX(), centroids_y[j] - tracks_[i].getY());
+            // to the current track (tracks_)
+            double dist;
+            if(mahalanobis_dist){
+                Eigen::MatrixXd S = tracks_[i].getSMatrix();
+
+                Eigen::VectorXd z = Eigen::VectorXd(2);
+                z << centroids_x[j], centroids_y[j];
+
+                Eigen::MatrixXd y = tracks_[i].getMeasureDifferenceY(z);
+                
+                auto dist2 = (y.transpose() * S.inverse() * y)(0);
+                dist = std::sqrt(dist2);
+            }else{
+                dist = std::hypot(centroids_x[j] - tracks_[i].getX(), centroids_y[j] - tracks_[i].getY());
+            }
             if(dist < min_dist){
                 min_dist=dist;
                 closest_point_id = j;

@@ -82,3 +82,13 @@ void KalmanFilter::setState(double x, double y)
 {
   x_ << x, y, 0., 0.;
 }
+  
+Eigen::MatrixXd KalmanFilter::getSMatrix(){
+  Eigen::MatrixXd S = H_ * P_ * H_.transpose() + R_;
+  return S; 
+}
+
+Eigen::VectorXd KalmanFilter::getMeasureDifferenceY(const Eigen::VectorXd &z){
+  Eigen::VectorXd y = z - H_ * x_;
+  return y; 
+}

@@ -3,6 +3,7 @@
 
 #include "tracker/Tracklet.h"
 #include <limits>
+#include <iostream>
 
 class Tracker
 {
@@ -41,6 +42,7 @@ private:
   double distance_threshold_;
   double covariance_threshold;
   int loss_threshold;
+  bool mahalanobis_dist;
 };
 
 #endif // TRACKER_H_

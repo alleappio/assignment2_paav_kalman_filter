@@ -20,6 +20,8 @@ public:
   double getY() { return kf_.getY(); }
   double getXCovariance() { return kf_.getXCovariance(); }
   double getYCovariance() { return kf_.getYCovariance(); }
+  Eigen::MatrixXd getSMatrix() { return kf_.getSMatrix(); }
+  Eigen::VectorXd getMeasureDifferenceY(const Eigen::VectorXd &z){ return kf_.getMeasureDifferenceY(z); }
   int getLossCount() { return loss_count_; }
   int getId() { return id_; }
 
