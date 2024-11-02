@@ -12,6 +12,15 @@ public:
   Tracker();
   ~Tracker();
 
+  // area struct
+  struct Area{
+    double min_x;
+    double max_x;
+    double min_y;
+    double max_y;
+  };
+
+
   // handle tracklets
   void removeTracks();
   void addTracks(const std::vector<bool> &associated_detections,
@@ -37,7 +46,7 @@ public:
   std::pair<int,double> getLongestPath();
 
   //setter
-  void setArea(double min_x,double max_x,double min_y,double max_y); 
+  void setArea(Tracker::Area input_area); 
 
 private:
   // tracklets
@@ -54,7 +63,8 @@ private:
   bool mahalanobis_dist;
 
   // area
-  std::map<std::string, double> area_;
+  //std::map<std::string, double> area_;
+  Tracker::Area area_;
   std::vector<Tracklet> tracklets_in_area_;
 };
 

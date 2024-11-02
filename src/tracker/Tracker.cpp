@@ -13,10 +13,10 @@ Tracker::Tracker()
     mahalanobis_dist=true;
 
     // set area bounds
-    area_["min_x"] = -1.0;
-    area_["max_x"] = 1.0;
-    area_["min_y"] = -1.0;
-    area_["max_y"] = 1.0;
+    area_.min_x = -1.0;
+    area_.max_x = 1.0;
+    area_.min_y = -1.0;
+    area_.max_y = 1.0;
 }
 Tracker::~Tracker()
 {
@@ -153,10 +153,10 @@ void Tracker::calcTrackletsInArea(){
     
     for(int i=0; i < tracks_.size(); i++){
         if(
-            tracks_[i].getX() > area_["min_x"] &&
-            tracks_[i].getX() < area_["max_x"] &&
-            tracks_[i].getY() > area_["min_y"] &&
-            tracks_[i].getY() < area_["max_y"]
+            tracks_[i].getX() > area_.min_x &&
+            tracks_[i].getX() < area_.max_x &&
+            tracks_[i].getY() > area_.min_y &&
+            tracks_[i].getY() < area_.max_y
         ){
             tracklets_in_area_.push_back(tracks_[i]);
         }
@@ -171,9 +171,6 @@ std::vector<int> Tracker::getIdsTracletsInArea(){
     return ids;
 }
 
-void Tracker::setArea(double min_x,double max_x,double min_y,double max_y){
-    area_["min_x"] = min_x;
-    area_["max_x"] = max_x;
-    area_["min_y"] = min_y;
-    area_["max_y"] = max_y;
+void Tracker::setArea(Tracker::Area input_area){
+    area_=input_area;
 } 

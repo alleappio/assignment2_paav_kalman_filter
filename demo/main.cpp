@@ -23,16 +23,22 @@ int main(int argc, char *argv[])
 
     // Instantiate the tracker
     Tracker tracker;
-    viewer::Box area;
+    Tracker::Area area;
+    area.min_x = -2;
+    area.max_x = 2;
+    area.min_y = -2;
+    area.max_y = 2;
 
-    area.x_min = -2;
-    area.x_max = 2;
-    area.y_min = -2;
-    area.y_max = 2;
-    area.z_min = -1;
-    area.z_max = -1;
+    viewer::Box box_area;
 
-    tracker.setArea(area.x_min, area.x_max, area.y_min, area.y_max);
+    box_area.x_min = area.min_x;
+    box_area.x_max = area.max_x;
+    box_area.y_min = area.min_y;
+    box_area.y_max = area.max_y;
+    box_area.z_min = -1;
+    box_area.z_max = -1;
+
+    tracker.setArea(area);
 
     // Spawn the thread that process the point cloud and performs the clustering
     CloudManager lidar_cloud(log_path, freq, renderer);
@@ -80,7 +86,7 @@ int main(int argc, char *argv[])
         longest_path_display << "Longest path: ID: " << longest_path.first << " distance: " << longest_path.second;
         std::cout << longest_path_display.str() << std::endl;
 
-        renderer.renderBox(area, -1, {1,1,0}, 0.20);
+        renderer.renderBox(box_area, -1, {1,1,0}, 0.20);
         tracker.calcTrackletsInArea();
         std::cout << "Number of traclets in yellow area:" << tracker.getNumTrackletsInArea() << std::endl;
 
