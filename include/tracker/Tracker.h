@@ -4,6 +4,7 @@
 #include "tracker/Tracklet.h"
 #include <limits>
 #include <iostream>
+#include <map>
 
 class Tracker
 {
@@ -27,9 +28,17 @@ public:
              const std::vector<double> &centroids_y,
              bool lidarStatus);
 
+  void calcTrackletsInArea();  
+
   // getters
   const std::vector<Tracklet> &getTracks() { return tracks_; }
-  std::pair<int,double> getLongestPath();  
+  int getNumTrackletsInArea(){ return tracklets_in_area_.size(); }
+  std::vector<int> getIdsTracletsInArea();
+  std::pair<int,double> getLongestPath();
+
+  //setter
+  void setArea(double min_x,double max_x,double min_y,double max_y); 
+
 private:
   // tracklets
   std::vector<Tracklet> tracks_;
@@ -43,6 +52,10 @@ private:
   double covariance_threshold;
   int loss_threshold;
   bool mahalanobis_dist;
+
+  // area
+  std::map<std::string, double> area_;
+  std::vector<Tracklet> tracklets_in_area_;
 };
 
 #endif // TRACKER_H_

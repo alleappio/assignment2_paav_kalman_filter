@@ -3,10 +3,20 @@
 Tracker::Tracker()
 {
     cur_id_ = 0;
+    
+    // set thresholds
     distance_threshold_ = 2.0; // meters
     covariance_threshold = 1.0; 
     loss_threshold = 50; //number of frames the track has not been seen
+
+    // use mahalanobis distance?
     mahalanobis_dist=true;
+
+    // set area bounds
+    area_["min_x"] = -1.0;
+    area_["max_x"] = 1.0;
+    area_["min_y"] = -1.0;
+    area_["max_y"] = 1.0;
 }
 Tracker::~Tracker()
 {
@@ -137,3 +147,33 @@ std::pair<int,double> Tracker::getLongestPath(){
 
     return std::pair<int,double>(id,dist);
 }  
+
+void Tracker::calcTrackletsInArea(){
+    tracklets_in_area_.clear();
+    
+    for(int i=0; i < tracks_.size(); i++){
+        if(
+            tracks_[i].getX() > area_["min_x"] &&
+            tracks_[i].getX() < area_["max_x"] &&
+            tracks_[i].getY() > area_["min_y"] &&
+            tracks_[i].getY() < area_["max_y"]
+        ){
+            tracklets_in_area_.push_back(tracks_[i]);
+        }
+    }
+}  
+std::vector<int> Tracker::getIdsTracletsInArea(){
+    std::vector<int> ids;
+    
+    for(Tracklet i:tracks_)
+        ids.push_back(i.getId());
+    
+    return ids;
+}
+
+void Tracker::setArea(double min_x,double max_x,double min_y,double max_y){
+    area_["min_x"] = min_x;
+    area_["max_x"] = max_x;
+    area_["min_y"] = min_y;
+    area_["max_y"] = max_y;
+} 
