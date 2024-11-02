@@ -81,15 +81,18 @@ int main(int argc, char *argv[])
             renderer.addText(tracks[i].getX() + 0.01, tracks[i].getY() + 0.01, tracks[i].getId());
         }
 
+        // longest traveled path features
         auto longest_path = tracker.getLongestPath();
         longest_path_display.str(std::string());
         longest_path_display << "Longest path: ID: " << longest_path.first << " distance: " << longest_path.second;
         std::cout << longest_path_display.str() << std::endl;
 
+        // tracklets in area feature
         renderer.renderBox(box_area, -1, {1,1,0}, 0.20);
         tracker.calcTrackletsInArea();
         std::cout << "Number of traclets in yellow area:" << tracker.getNumTrackletsInArea() << std::endl;
 
+        // cleanings
         std::cout << std::endl;
         renderer.spinViewerOnce();
     }

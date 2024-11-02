@@ -31,7 +31,6 @@ void Tracker::removeTracks()
     
     for (size_t i = 0; i < tracks_.size(); ++i)
     {
-        // TODO
         // Implement logic to discard old tracklets
         // logic_to_keep is a dummy placeholder to make the code compile and should be subsituted with the real condition
         if (tracks_[i].getXCovariance() < covariance_threshold && tracks_[i].getYCovariance() < covariance_threshold ||
@@ -73,7 +72,6 @@ void Tracker::dataAssociation(std::vector<bool> &associated_detections, const st
 
         for (size_t j = 0; j < associated_detections.size(); ++j)
         {
-            // TODO
             // Implement logic to find the closest detection (centroids_x,centroids_y) 
             // to the current track (tracks_)
             double dist;
@@ -111,13 +109,13 @@ void Tracker::track(const std::vector<double> &centroids_x,
 {
 
     std::vector<bool> associated_detections(centroids_x.size(), false);
-    // TODO: Predict the position
+    // Predict the position
     //For each track --> Predict the position of the tracklets
     for(int i=0; i<tracks_.size(); i++){
         tracks_[i].predict();
     } 
 
-    // TODO: Associate the predictions with the detections
+    // Associate the predictions with the detections
     dataAssociation(associated_detections, centroids_x, centroids_y);
      
     // Update tracklets with the new detections
@@ -128,9 +126,9 @@ void Tracker::track(const std::vector<double> &centroids_x,
         tracks_[track_id].update(centroids_x[det_id], centroids_y[det_id], lidarStatus);
     }
 
-    // TODO: Remove dead tracklets
+    // Remove dead tracklets
     removeTracks();
-    // TODO: Add new tracklets
+    // Add new tracklets
     addTracks(associated_detections, centroids_x, centroids_y);
 }
 
