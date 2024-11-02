@@ -44,6 +44,7 @@ public:
   int getNumTrackletsInArea(){ return tracklets_in_area_.size(); }
   std::vector<int> getIdsTracletsInArea();
   std::pair<int,double> getLongestPath();
+  int getLongestInAreaId();
 
   //setter
   void setArea(Tracker::Area input_area); 
@@ -66,6 +67,7 @@ private:
   //std::map<std::string, double> area_;
   Tracker::Area area_;
   std::vector<Tracklet> tracklets_in_area_;
+  std::map<int,unsigned int> tracklet_in_area_counter_;
 };
 
 #endif // TRACKER_H_

@@ -91,6 +91,7 @@ int main(int argc, char *argv[])
         renderer.renderBox(box_area, -1, {1,1,0}, 0.20);
         tracker.calcTrackletsInArea();
         std::cout << "Number of traclets in yellow area:" << tracker.getNumTrackletsInArea() << std::endl;
+        std::cout << "Tracklet for most time in area:" << tracker.getLongestInAreaId() << std::endl;
 
         // cleanings
         std::cout << std::endl;

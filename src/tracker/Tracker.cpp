@@ -34,8 +34,9 @@ void Tracker::removeTracks()
         // Implement logic to discard old tracklets
         // logic_to_keep is a dummy placeholder to make the code compile and should be subsituted with the real condition
         if (tracks_[i].getXCovariance() < covariance_threshold && tracks_[i].getYCovariance() < covariance_threshold ||
-            tracks_[i].getLossCount() < loss_threshold)
+            tracks_[i].getLossCount() < loss_threshold){
             tracks_to_keep.push_back(tracks_[i]);
+        }
     }
 
     tracks_.swap(tracks_to_keep);
@@ -48,8 +49,11 @@ void Tracker::addTracks(const std::vector<bool> &associated_detections, const st
 {
     // Adding not associated detections
     for (size_t i = 0; i < associated_detections.size(); ++i)
-        if (!associated_detections[i])
-            tracks_.push_back(Tracklet(cur_id_++, centroids_x[i], centroids_y[i]));
+        if (!associated_detections[i]){
+            Tracklet new_tracklet(cur_id_++, centroids_x[i], centroids_y[i]);
+            tracks_.push_back(new_tracklet);
+            tracklet_in_area_counter_[new_tracklet.getId()] = 0;
+        }
 }
 
 /*
@@ -157,6 +161,7 @@ void Tracker::calcTrackletsInArea(){
             tracks_[i].getY() < area_.max_y
         ){
             tracklets_in_area_.push_back(tracks_[i]);
+            tracklet_in_area_counter_[tracks_[i].getId()]+=1;
         }
     }
 }  
@@ -172,3 +177,15 @@ std::vector<int> Tracker::getIdsTracletsInArea(){
 void Tracker::setArea(Tracker::Area input_area){
     area_=input_area;
 } 
+
+int Tracker::getLongestInAreaId(){
+    int id=-1;
+    unsigned int min_time=0;
+    for(auto i = tracklet_in_area_counter_.begin(); i!=tracklet_in_area_counter_.end(); i++){
+        if(i->second > min_time){
+            id=i->first;
+            min_time = i->second;
+        }
+    }
+    return id;
+}
