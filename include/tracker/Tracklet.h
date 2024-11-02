@@ -24,6 +24,7 @@ public:
   Eigen::VectorXd getMeasureDifferenceY(const Eigen::VectorXd &z){ return kf_.getMeasureDifferenceY(z); }
   int getLossCount() { return loss_count_; }
   int getId() { return id_; }
+  double getDistanceTraveled() { return dist_traveled_; }
 
 private:
   // filter
@@ -34,6 +35,12 @@ private:
 
   // number of loss since last update
   int loss_count_;
+
+  //  total distance traveled by tracklet
+  double dist_traveled_;
+
+  // used to calculate distance traveled
+  Eigen::Vector2d last_position_;
 };
 
 #endif // TRACKLET_H_

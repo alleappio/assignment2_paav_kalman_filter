@@ -28,6 +28,8 @@ int main(int argc, char *argv[])
     CloudManager lidar_cloud(log_path, freq, renderer);
     std::thread t(&CloudManager::startCloudManager, &lidar_cloud);
 
+    std::stringstream longest_path_display;
+
     while (true)
     {
         // Clear the render
@@ -61,6 +63,12 @@ int main(int argc, char *argv[])
             renderer.addCircle(tracks[i].getX(), tracks[i].getY(), tracks[i].getId());
             renderer.addText(tracks[i].getX() + 0.01, tracks[i].getY() + 0.01, tracks[i].getId());
         }
+
+        auto longest_path = tracker.getLongestPath();
+        longest_path_display.str(std::string());
+        longest_path_display << "Longest path: ID: " << longest_path.first << " distance: " << longest_path.second;
+        //renderer.addText(0,0,longest_path_display.str());
+        std::cout << longest_path_display.str() << std::endl;
 
         renderer.spinViewerOnce();
     }

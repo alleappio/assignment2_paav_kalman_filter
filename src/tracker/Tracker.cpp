@@ -123,3 +123,17 @@ void Tracker::track(const std::vector<double> &centroids_x,
     // TODO: Add new tracklets
     addTracks(associated_detections, centroids_x, centroids_y);
 }
+
+std::pair<int,double> Tracker::getLongestPath(){
+    int id=-1;
+    double dist=0;
+    
+    for(int i=0; i<tracks_.size(); i++){
+        if(dist<tracks_[i].getDistanceTraveled()){
+            dist=tracks_[i].getDistanceTraveled();
+            id=tracks_[i].getId();
+        }    
+    }
+
+    return std::pair<int,double>(id,dist);
+}  

@@ -29,7 +29,7 @@ public:
 
   // getters
   const std::vector<Tracklet> &getTracks() { return tracks_; }
-
+  std::pair<int,double> getLongestPath();  
 private:
   // tracklets
   std::vector<Tracklet> tracks_;

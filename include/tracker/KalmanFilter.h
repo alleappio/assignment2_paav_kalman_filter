@@ -25,6 +25,7 @@ public:
   double getY() { return x_[1]; }
   Eigen::MatrixXd getSMatrix();
   Eigen::VectorXd getMeasureDifferenceY(const Eigen::VectorXd &z);
+  Eigen::Vector2d getPosition(){ return Eigen::Vector2d(x_(0), x_(1)); }
 
 private:
   // dt in seconds
