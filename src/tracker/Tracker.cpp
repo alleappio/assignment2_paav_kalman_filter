@@ -25,7 +25,7 @@ void Tracker::removeTracks()
         // Implement logic to discard old tracklets
         // logic_to_keep is a dummy placeholder to make the code compile and should be subsituted with the real condition
         if (tracks_[i].getXCovariance() < covariance_threshold && tracks_[i].getYCovariance() < covariance_threshold ||
-            tracks_[i].getLossCount() > loss_threshold)
+            tracks_[i].getLossCount() < loss_threshold)
             tracks_to_keep.push_back(tracks_[i]);
     }
 
