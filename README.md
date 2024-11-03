@@ -49,8 +49,8 @@ Optional EKF assignment (0-5 points)
     - Please see the readme
     
 Implement any cool functionality! (0-5 points)
--   Return the id and length of the path of the track that has traveled the longest path
--   Define an area and count the persons that has entered in that area
--   Define an area and return the ID of the person who has been in that area the longest
--   Is it possible to extend the state vector to support the yaw angle? If so, why and how. Try to implement it
+-   Return the id and length of the path of the track that has traveled the longest path ✓
+-   Define an area and count the persons that has entered in that area ✓
+-   Define an area and return the ID of the person who has been in that area the longest ✓
+-   Is it possible to extend the state vector to support the yaw angle? If so, why and how. Try to implement it 
 -   Feel free to propose your idea!
