@@ -6,8 +6,8 @@ Tracker::Tracker()
     
     // set thresholds
     distance_threshold_ = 2.0; // meters
-    covariance_threshold = 1.0; 
-    loss_threshold = 50; //number of frames the track has not been seen
+    covariance_threshold = 100.0; 
+    loss_threshold = 20; //number of frames the track has not been seen
 
     // use mahalanobis distance?
     mahalanobis_dist=true;
