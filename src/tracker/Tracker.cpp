@@ -180,11 +180,11 @@ void Tracker::setArea(Tracker::Area input_area){
 
 int Tracker::getLongestInAreaId(){
     int id=-1;
-    unsigned int min_time=0;
+    unsigned int max_time=0;
     for(auto i = tracklet_in_area_counter_.begin(); i!=tracklet_in_area_counter_.end(); i++){
-        if(i->second > min_time){
+        if(i->second > max_time){
             id=i->first;
-            min_time = i->second;
+            max_time = i->second;
         }
     }
     return id;
